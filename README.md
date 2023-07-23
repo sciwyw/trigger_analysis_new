@@ -25,6 +25,7 @@ hits =tree.arrays(library = 'pd')
 ```
 
 step 2: count number in certain time window (Just define your own ways to count photons. This is trigger.)
+
 example: this funtion can decide if a hDOM is triggered.
 ```
 def Is_L1_trigger(data:pd.DataFrame):
@@ -51,6 +52,7 @@ def Is_L1_trigger(data:pd.DataFrame):
             return True
 ```
 step 3: make some plots from step 2
+
 example:
 ```
 plt.hist(data, range, bins,histtype = 'step')
