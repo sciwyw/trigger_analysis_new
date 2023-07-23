@@ -1,6 +1,6 @@
 # trigger_analysis
 Three parts are included. 
-1. K40 simulation & analysis
+1. K40 simulation (Geant4) & analysis
 2. L1 analysis(muon and shower events are included)
 3. L2 analysis(only muon threshold analysis is included)
 
@@ -14,4 +14,4 @@ step 2: count number in certain time window
 
 step 3: make some plots from step 2
 
-All is written in python.
+All analysis is written in python.
