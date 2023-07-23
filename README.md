@@ -17,6 +17,11 @@ Code here is mazy and sloppy, but the basic workflow is simple and similar.
 
 step 1: Read information from data.root
 
+example:
+file = uproot.open(file_name)
+tree = file[file.keys()[0]]
+hits =tree.arrays(library = 'pd')
+
 step 2: count number in certain time window (Just define your own ways to count photons. This is trigger.)
 
 step 3: make some plots from step 2
