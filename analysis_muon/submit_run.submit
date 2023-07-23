@@ -1,0 +1,9 @@
+Universe   = vanilla
+Executable = run.sh
+
+Log        = 0.log
+Output     = 0.out
+Error      = 0.error
+
+should_transfer_files = NO
+Queue
