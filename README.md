@@ -7,8 +7,11 @@ Three parts are included.
 Trigger is a game about counting some number in certain time window.
 
 Code here is mazy and sloppy, but the basic workflow is simple and similar. 
+
 step 1: Read information from data.root
+
 step 2: count number in certain time window
+
 step 3: make some plots from step 2
 
 All is written in python.
