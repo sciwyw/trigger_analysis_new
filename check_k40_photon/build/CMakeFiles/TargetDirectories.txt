@@ -1,0 +1,7 @@
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/install/strip.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/install/local.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/install.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/list_install_components.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/rebuild_cache.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/edit_cache.dir
+/lustre/neutrino/weizhenyu/trigger/check_k40_photon/build/CMakeFiles/main.dir
