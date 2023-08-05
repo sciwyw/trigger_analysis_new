@@ -2,8 +2,11 @@
 Three parts are included. 
 1. K40 and dark noise simulation (Geant4) & analysis in analysis_trigger_root_tts.py, bandwidth_estimation.py and analysis_trigger_dark_noise.py.
 
-   Analysis target: Count coincidence photon events in hDOM. 
-   
+   Analysis target: Count coincidence photon events in hDOM.
+example:
+```
+   python3 analysis/analysis_trigger_root_tts.py [time window] [coincidence number]
+``` 
 3. L1 analysis(muon and shower events are included) in analysis_muon and analysis_shower
 
    Analysis target: Count hDOM trigger efficiency for certain energy events at certain distance.
@@ -53,8 +56,4 @@ def Is_L1_trigger(data:pd.DataFrame):
 ```
 step 3: make some plots from step 2
 
-example:
-```
-plt.hist(data, range, bins,histtype = 'step')
-```
 All analysis is written in python.
