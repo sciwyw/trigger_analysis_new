@@ -13,7 +13,7 @@ Three parts are included.
    Analysis target: Obtain muon trigger efficiency for certain energy events.
 
 Trigger is a game about counting some number in certain time window.
-Code here is mazy and sloppy, but the basic workflow is simple and similar. 
+Code here is a little sloppy, but the basic workflow is simple and similar. 
 
 step 1: Read information from data.root
 
