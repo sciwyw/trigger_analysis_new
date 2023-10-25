@@ -77,7 +77,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   G4String OpenPath =  std::to_string(G4UniformRand()) + "_data.root";
   analysisManager->OpenFile(OpenPath);
   analysisManager->SetVerboseLevel( 1 );
-  analysisManager->CreateNtuple(run_num ,"time");
+  analysisManager->CreateNtuple("Time" ,"time");
   
   analysisManager->CreateNtupleIColumn("eventID");
   analysisManager->CreateNtupleDColumn("t(ns)");
