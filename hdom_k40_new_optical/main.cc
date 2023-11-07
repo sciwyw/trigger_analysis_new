@@ -43,6 +43,7 @@
 // #include "MyAnalysis.hh"
 #include "PhysicsList.hh"
 #include "time.h"
+#include "yaml-cpp/yaml.h"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -52,6 +53,8 @@ int main(int argc,char** argv)
   //
   //char* fileG4 = argv[1];
   //char* fileGeometry= argv[2];
+  char* fileConfig= argv[1];
+  YAML::Node rootNode = YAML::LoadFile(fileConfig);
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
   G4long seed = time(NULL);
   CLHEP::HepRandom::setTheSeed(seed);
@@ -105,7 +108,9 @@ int main(int argc,char** argv)
   UImanager->ApplyCommand("/event/verbose    0");
   UImanager->ApplyCommand("/process/verbose  0");
   runManager->Initialize(); 
-  runManager->BeamOn(20000000);//(250000000)
+  G4long beamon =rootNode["BeamOn"].as<long>();
+  runManager->BeamOn(beamon);
+  //runManager->BeamOn(20000000);//(250000000)
   //runManager->/gps/particle gamma
   ///gps/energy 1.459 MeV
 
