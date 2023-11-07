@@ -1,3 +1,5 @@
+# config of main
+BeamOn: 20000000
 # config of PMT' theta and phi 
 numOftheta0: 6
 theta_array0: 
