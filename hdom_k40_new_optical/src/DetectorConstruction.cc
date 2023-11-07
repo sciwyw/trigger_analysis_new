@@ -255,7 +255,7 @@ G4VPhysicalVolume *DetectorConstruction::DefineVolumes()
 {
   SetPSVolumes();
   //world size
-  G4double worldlength = 200 * m;
+  G4double worldlength = 30 * m;
   G4Orb* worldS = new G4Orb("world", worldlength);//, worldlength, worldlength);
   G4LogicalVolume *worldLV = new G4LogicalVolume(
                                                 worldS,            //its solid
