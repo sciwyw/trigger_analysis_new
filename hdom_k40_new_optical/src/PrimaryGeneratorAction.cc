@@ -93,7 +93,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
     fVecPrimaryVertex[event_id] = new G4PrimaryVertex;
     //G4cout << "event_id " << event_id << G4endl;
     //G4cout << "fVecPrimaryVertex[event_id] = new G4PrimaryVertex;" << G4endl;
-    sample_r = cbrt(G4RandFlat::shoot(0.215 * 0.215 * 0.215, 200. * 200. * 200)) * m;
+    sample_r = cbrt(G4RandFlat::shoot(0.215 * 0.215 * 0.215, 30. * 30. * 30)) * m;
     G4cout << sample_r << G4endl;
     //theta_r = G4RandFlat::shoot(0., M_PI);
     phi_r = G4RandFlat::shoot(0.,2 * M_PI);
