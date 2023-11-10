@@ -115,6 +115,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event *anEvent)
       
       outfile.open("energy_spec_e.csv", std::ios_base::app);
       outfile << energy_e << G4endl;
+      outfile.close();
       
       fVecPrimaryVertex[event_id]->SetPosition(pos_x, pos_y, pos_z);
 
