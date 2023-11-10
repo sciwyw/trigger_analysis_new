@@ -80,13 +80,13 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   analysisManager->CreateNtuple("Time" ,"time");
   
   analysisManager->CreateNtupleIColumn("eventID");
-  analysisManager->CreateNtupleDColumn("t(ns)");
+  analysisManager->CreateNtupleDColumn("t_ns");
   analysisManager->CreateNtupleDColumn("copynumber");
   //analysisManager->CreateNtupleDColumn("copynumber_phi");
-  analysisManager->CreateNtupleDColumn("energy(eV)");
-  analysisManager->CreateNtupleDColumn("x(mm)");
-  analysisManager->CreateNtupleDColumn("y(mm)");
-  analysisManager->CreateNtupleDColumn("z(mm)");
+  analysisManager->CreateNtupleDColumn("energy_eV");
+  analysisManager->CreateNtupleDColumn("x_mm");
+  analysisManager->CreateNtupleDColumn("y_mm");
+  analysisManager->CreateNtupleDColumn("z_mm");
   analysisManager->FinishNtuple();
 }
 
