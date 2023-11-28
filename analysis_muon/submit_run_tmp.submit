@@ -1,0 +1,9 @@
+Universe   = vanilla
+Executable = run_tmp.sh
+
+Log        = 1.log
+Output     = 1.out
+Error      = 1.error
+
+should_transfer_files = NO
+Queue
