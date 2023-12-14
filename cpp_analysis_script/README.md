@@ -33,5 +33,6 @@ The output is a csv file (**remember to change the path of the .csv file in mai
 #### Default
 - only analyze time window = 20ns (add or edit in the .cpp file)
 #### Draw
+Edit the python script first to meet the .csv file and run number.
 `python draw_bandwidth.py`
 
