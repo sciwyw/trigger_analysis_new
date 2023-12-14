@@ -16,4 +16,13 @@ the `.yaml` files could be found in `k40_oneDOM_execu_version/config`
 - stopandkill 
 
 ### Analysis 
-The
+The analysis code: `cpp_analysis_script` 
+Run analysis by:
+```shell
+mkdir build
+cd build
+cmake Path/To/cpp_analysis_script
+make
+hadd copy.root data.root
+./analysis copy.root
+```
