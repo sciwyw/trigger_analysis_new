@@ -73,7 +73,7 @@ void RunAction::BeginOfRunAction(const G4Run* aRun)
   G4int runid =  aRun->GetRunID();
   G4String run_num = std::to_string(runid);
   // G4String OpenPath = folderPath + "/data.csv";
-  G4String OpenPath =  std::to_string(G4UniformRand()) + "_data.root";
+  G4String OpenPath =  "data.root";
   analysisManager->OpenFile(OpenPath);
   analysisManager->SetVerboseLevel( 1 );
   analysisManager->CreateNtuple("Hit" + run_num ,"time");
