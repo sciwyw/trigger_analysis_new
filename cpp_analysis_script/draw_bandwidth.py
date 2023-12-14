@@ -3,14 +3,26 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 
+def tim(radius):
+    N_event = 20000000 * 20 #BeamOn * Run number 
+    N_event = np.random.poisson(lam = N_event)
+    activtyK40 = 10.87
+    effective = 1
+    volume = 4 * np.pi * radius**3 / 3
+    mass = 1.04* volume * 10**3
+    frequncy = mass * activtyK40 * effective
+    time = N_event / frequncy #* 10 ** 9
+    print(time)
+    return time
+
 if __name__ == "__main__":
     wf_hz2MB = 31 * 500 * 16 / 1024 / 1024 / 8
     tdc_hz2MB = 24 * 100 / 8 / 1024 / 1024
-    # one_time_sim = 2*7.81918 * 10 ** 6  # ns
-    sim_time = 7.82  # s
+    radius = 30
+    sim_time = tim(radius)  # s  
     coin_num = [1, 2, 3, 4, 5, 6, 7]
     time_window = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30]
-    csvfile = "trigger_num5.csv"
+    csvfile = "trigger_num.csv"
     trigger_list = pd.read_csv(csvfile, header=None)
     # run_num = len(trigger_list[0])
     # print("run %d times" % run_num)
