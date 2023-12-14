@@ -37,7 +37,7 @@
 #include "G4StepLimiterPhysics.hh"
 
 #include "Randomize.hh"
-
+#include "random"  
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
 #include "PhysicsList.hh"
@@ -55,9 +55,9 @@ int main(int argc,char** argv)
   char* fileConfig= argv[1];
   YAML::Node rootNode = YAML::LoadFile(fileConfig);
   CLHEP::HepRandom::setTheEngine(new CLHEP::RanecuEngine());
-  G4long seed = time(NULL);//
   //G4long seed = 100;
-  CLHEP::HepRandom::setTheSeed(seed);
+  std::random_device se;
+  CLHEP::HepRandom::setTheSeed(se());
   // G4UIExecutive* ui = 0;
   if (argc != 3) {
     std::cerr << "Wrong input arguments! The right way is: ./main [config/config.yaml] [config/optical_property.yaml]";
