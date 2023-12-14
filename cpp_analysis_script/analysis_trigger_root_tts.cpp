@@ -1,6 +1,7 @@
 //
 // Created by ineffablord on 23-11-28.
 //
+#include "TH1.h"
 #include "fstream"
 #include "iostream"
 #include "sstream"
@@ -10,7 +11,6 @@
 #include "TBranch.h"
 #include "random"
 #include "analysis_trigger_root_tts.h"
-#include "set"
 #include "cmath"
 
 Double_t GetTotalTime(TTree* aintree){
@@ -118,99 +118,47 @@ void Addtts(const Double_t tts, TTree* anewtree, std::mt19937 agenerator) {
     anewtree->Write("",TObject::kOverwrite);
 }
 
-void Trigger(TTree* thenewtree, TTree* outputtree, Int_t coin, Double_t window, std::ofstream* csvfile){
-    Int_t id;
-    TBranch* idbranch = thenewtree->GetBranch("eventid");
-    idbranch->SetAddress(&id);
-    Double_t time, timeflag;
+void CountCoinPmt(TTree* thenewtree, Double_t window, const Int_t coin, std::ofstream* csvfile){
+    Double_t time;
     TBranch* timebranch = thenewtree->GetBranch("addtts");
     timebranch->SetAddress(&time);
     Double_t pmtid;
     TBranch* pmtidbranch = thenewtree->GetBranch("PMTid");
     pmtidbranch->SetAddress(&pmtid);
-    Int_t oid;
-    Double_t t;
-    Bool_t tri = kFALSE;
-    Double_t pmt;
-    outputtree->Branch("eventid",&oid,"eventid/I");
-    outputtree->Branch("time", &t, "time/D");
-    outputtree->Branch("PMTid",&pmt,"PMTid/D");
-    outputtree->Branch("state",&tri,"trigger_state/O");
     const Long64_t entries = thenewtree->GetEntries();
-    Long64_t x = 0;
-    for ( ; x < entries - coin + 1; x++){
-        idbranch->GetEntry(x);
-        pmtidbranch->GetEntry(x);
-        timebranch->GetEntry(x);
-        outputtree->GetEntry(x);
-        oid = id;
-        pmt = pmtid;
-        t = timeflag = time;
-        timebranch->GetEntry(x+coin-1);
-        if (std::abs(time-timeflag)<=window){
-            std::set<Double_t> pmts;
-            Int_t number_of_pmts = 0;
-            Long64_t I = 0;
-            while (std::abs(time-timeflag)<=window and x+I < entries){
-                if (pmts.count(pmt) == 0){
-                    number_of_pmts++;
-                }
-                pmts.insert(pmt);
-                I++;
-                timebranch->GetEntry(x+I);
-                pmtidbranch->GetEntry(x+I);
-                pmt = pmtid;
-            }
-            if (number_of_pmts>=coin){
-                outputtree->GetEntry(x);
-                idbranch->GetEntry(x);
-                timebranch->GetEntry(x);
-                pmtidbranch->GetEntry(x);
-                oid=id;t=time;pmt=pmtid;
-                tri=kTRUE;
-                outputtree->Fill();
-                for (Long64_t i = 1; i < I; i++){
-                    x++;
-                    outputtree->GetEntry(x);
-                    idbranch->GetEntry(x);
-                    timebranch->GetEntry(x);
-                    pmtidbranch->GetEntry(x);
-                    oid=id;t=time;pmt=pmtid;
-                    tri=kFALSE;
-                    outputtree->Fill();
-                }
-            }else{
-                outputtree->GetEntry(x);
-                idbranch->GetEntry(x);
-                timebranch->GetEntry(x);
-                pmtidbranch->GetEntry(x);
-                oid=id;t=time;pmt=pmtid;
-                tri=kFALSE;
-                outputtree->Fill();
-            }
-        }
-        else{
-            outputtree->GetEntry(x);
-            tri = kFALSE;
-            outputtree->Fill();
+    Double_t start_time, end_time;
+    timebranch->GetEntry(0);
+    start_time = floor(time/window)*window;
+    timebranch->GetEntry(entries-1);
+    end_time = ceil(time/window)*window;
+    Int_t bins;
+    bins = Int_t((end_time - start_time)/window)+1;
+    TH1I* pmt_data[31];
+    for (Int_t i = 0;i < 31;i++){
+        pmt_data[i] = new TH1I(Form("pmt_%d",i), Form("PMTid %i",i),bins,start_time,end_time);
+    }
+    TH1I* dom = new TH1I(Form("dom"), Form("dom"),bins,start_time,end_time);
+    Int_t n;
+    for (Long64_t i = 0; i < entries; i++){
+        timebranch->GetEntry(i);
+        pmtidbranch->GetEntry(i);
+        n = floor((time-start_time)/window);
+        pmt_data[Int_t(pmtid)]->SetBinContent(n+1,1);
+    }
+    for (auto & i : pmt_data){
+        dom->Add(i);
+    }
+    Long64_t count = 0;
+    for (Int_t i = 1; i <= bins; i++){
+        if (dom->GetBinContent(i) == coin){
+            count++;
         }
     }
-    for ( ; x < entries; x++){
-        idbranch->GetEntry(x);
-        timebranch->GetEntry(x);
-        pmtidbranch->GetEntry(x);
-        outputtree->GetEntry(x);
-        oid = id;
-        pmt = pmtid;
-        t = time;
-        tri = kFALSE;
-        outputtree->Fill();
+    *csvfile << int(count) << ",";
+    for (auto & i : pmt_data){
+        delete i;
     }
-
-    Long64_t trigger_count;
-    trigger_count = outputtree->Draw("","state == 1","goff");
-    *csvfile << int(trigger_count) << ",";
-    outputtree->Write("",TObject::kOverwrite);
+    delete dom;
 }
 
 int main(int argc, char** argv){
@@ -238,7 +186,7 @@ int main(int argc, char** argv){
     sim_time = GetTotalTime(intree);
     std::cout << sim_time << std::endl;
     //---Get qe
-    std::string qepath = "../../data/qe.csv";
+    std::string qepath = "/lustre/neutrino/huangweilun/k40sim/cppanalysis/store/qe.csv";
     std::vector<QEdata> QE = Readcsv(qepath);
     //Apply qe in a new tree
     ApplyQE(intree,QE,newtree,generator);
@@ -250,20 +198,12 @@ int main(int argc, char** argv){
     //                             Tree:analysis Branch:eventid hittime PMTid addtts
     //---Trigger
     std::ofstream outcsv;
-    outcsv.open("trigger_num.csv", std::ios_base::app);
+    outcsv.open("/lustre/neutrino/huangweilun/k40sim/k40data/multiruns/diff_world/130m/trigger_num.csv", std::ios_base::app);
     const int coin_num[] = {1,2,3,4,5,6,7};
-    const double time_win[] = {2,4,6,8,10,12,14,16,18,20,22,24,26,28,30};
-    for (int i : coin_num){
-        for (double j : time_win){
-            std::string outpath = std::to_string(i) + "_" + std::to_string(int(j)) + "_" + "copy.root";
-            auto* opath = const_cast<char *>(outpath.c_str());
-            auto *outfile= new TFile(opath, "RECREATE");
-            auto* trigger = new TTree("trigger", "batch_trigger");
-            trigger->SetDirectory(outfile);
-            Trigger(newtree,trigger,i,j,&outcsv);
-            outfile->Write();
-            outfile->Close();
-            delete outfile;
+    const double time_win[] = {20};
+    for (double j : time_win){
+        for (int i : coin_num){
+            CountCoinPmt(newtree,j,i,&outcsv);
         }
     }
 
